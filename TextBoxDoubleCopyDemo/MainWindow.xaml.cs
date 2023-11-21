@@ -1,6 +1,6 @@
-﻿using TextBoxDoubleCopyDemo;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Controls;
 
 namespace TextBoxDoubleCopyDemo
 {
@@ -19,10 +19,10 @@ namespace TextBoxDoubleCopyDemo
         protected override void OnSourceInitialized(EventArgs e)
         {
             _winApi = new WinApi();
-            _winApi.SubscribeToWndProc(this);
             nint windowHandle = new WindowInteropHelper(this).Handle;
             WinApi.SubscribeToClipboardChanged(windowHandle);
             _winApi.ClipboardChanged += ClipboardChanged;
+            _winApi.SubscribeToWndProc(this);
         }
 
         private void ClipboardChanged(object? sender, EventArgs? e)
@@ -33,10 +33,9 @@ namespace TextBoxDoubleCopyDemo
                 try
                 {
                     // Can throw "System.Runtime.InteropServices.COMException (0x800401D0): OpenClipboard Failed (0x800401D0 (CLIPBRD_E_CANT_OPEN))"
-                    // Hence the bizzare while loop to make sure we get the text.
+                    // Hence the bizarre while loop to make sure we get the text.
                     string text = Clipboard.GetText();
                     gotTextFromClipboard = true;
-
                     ++_copyCount;
                     MainTextBox.Text += $"\nCopy count: {_copyCount}";
                 }
@@ -66,6 +65,11 @@ namespace TextBoxDoubleCopyDemo
                 {
                 }
             } while (retry);
+        }
+
+        private void MainTextBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            HandRolledCopyMenuItem.IsEnabled = MainTextBox.SelectionLength > 0;
         }
     }
 }
