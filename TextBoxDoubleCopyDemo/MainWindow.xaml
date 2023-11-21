@@ -1,0 +1,23 @@
+﻿<Window x:Class="TextBoxDoubleCopyDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TextBoxDoubleCopyDemo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+        <TextBox Name="MainTextBox" TextWrapping="Wrap" IsReadOnly="True" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">Try copying (a part of) this text with Ctrl+C, Context Menu->Copy and Context Menu->Handrolled Copy. Observe how copying the text with Ctrl+C and Context Menu->Copy cause the text to be copied twice while using Context Menu->Handrolled Copy doesn't have the same issue.
+            <TextBox.ContextMenu>
+                <ContextMenu>
+                <MenuItem
+                                Name="CopyMenuItem"
+                                Header="Copy"
+                                Command="Copy" />
+                <MenuItem
+                                Name="HandRolledCopyMenuItem"
+                                Header="Handrolled Copy"
+                                Click="CopyTextToClipboard" />
+            </ContextMenu>
+            </TextBox.ContextMenu>
+        </TextBox>
+</Window>
